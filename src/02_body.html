@@ -1,0 +1,46 @@
+<div id="app">
+  <div id="topbar">
+    <button class="btn ghost small" id="btn-menu" title="Show or hide the left panel" aria-label="Show or hide the left panel">☰</button>
+    <button class="company" id="company" title="Company name and logo"></button>
+    <div class="brand"><span class="mark">VS</span><span>VibeScope</span><span class="small muted mono" id="ver"></span></div>
+    <span class="status" id="status">Ready</span>
+    <div class="spacer"></div>
+    <button class="btn small" id="btn-import" title="Import data exports (csv, txt, xlsx) and test reports (pdf, doc, docx)">Import files</button>
+    <input type="file" id="file-input" multiple accept=".xlsx,.xls,.csv,.txt,.tsv,.doc,.docx,.pdf" hidden>
+    <button class="btn small" id="btn-save" title="Save the whole project (tests, data, sensor maps) as a JSON file">Save project</button>
+    <button class="btn small" id="btn-load" title="Load a saved project JSON">Load project</button>
+    <input type="file" id="proj-input" accept=".json,.gz,application/json,application/gzip" hidden>
+    <button class="btn ghost small" id="btn-undo" title="Undo (Ctrl+Z)">↶</button>
+    <button class="btn ghost small" id="btn-redo" title="Redo (Ctrl+Y or Ctrl+Shift+Z)">↷</button>
+    <button class="btn ghost small" id="btn-theme" title="Toggle dark mode">Theme</button>
+    <button class="btn ghost small" id="btn-help" title="Guide and reference">Guide</button>
+  </div>
+  <div id="body">
+    <aside id="sidebar">
+      <div class="sb-head"><h2 id="sb-title">Sessions</h2><label class="chk small" title="Show the hidden tests and sessions (check runs, wrong levels, faulty sets)"><input type="checkbox" id="sb-showhidden"> hidden <span id="sb-hidden-count"></span></label><button class="btn ghost small" id="btn-new-session" title="New session">+ Session</button></div>
+      <div class="sb-mode"><div class="seg" id="sb-mode" title="Show the tests by test day (sessions) or grouped into test campaigns (only the runs that count)"><button data-tm="date">By date</button><button data-tm="campaign">Campaigns</button></div><label class="chk small sb-group" title="Show Sine, Random and SRS sub-headings under each axis (tests stay in run order inside each)"><input type="checkbox" id="sb-group"> Group by test type</label></div>
+      <div id="tree"></div>
+      <div class="sb-foot">
+        <button class="btn small" id="btn-new-test">+ Test</button>
+        <button class="btn small" id="btn-autobuild" title="Create the standard test matrix for the active session">Standard matrix</button>
+      </div>
+    </aside>
+    <div id="dragbar"></div>
+    <section id="main">
+      <nav id="tabs">
+        <button class="tab active" data-tab="overview">Overview</button>
+        <button class="tab" data-tab="test">Test</button>
+        <button class="tab" data-tab="compare">Compare</button>
+        <button class="tab" data-tab="signatures">Signatures</button>
+        <button class="tab" data-tab="sensors">Sensors and 3D</button>
+        <button class="tab" data-tab="files">Files</button>
+        <button class="tab" data-tab="settings">Profiles and settings</button>
+      </nav>
+      <div id="view"></div>
+    </section>
+  </div>
+</div>
+<div id="globaldrop">Drop data files to import</div>
+<div id="ctx"></div>
+<div id="toasts"></div>
+<div id="modal"><div class="box"><div class="mh"><span id="modal-title"></span><button class="btn ghost small" id="modal-x">✕</button></div><div class="mb" id="modal-body"></div><div class="mf" id="modal-foot"></div></div></div>

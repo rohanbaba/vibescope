@@ -1,0 +1,7 @@
+# project files and local data never belong in the repository
+*.json.gz
+*.json
+site/*
+!site/default.js
+.DS_Store
+__pycache__/
