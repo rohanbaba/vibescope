@@ -1,4 +1,4 @@
-Time (s),Control (g),Box lid X (g),Box lid Y (g),Box lid Z (g),Bracket X (g),Bracket Y (g),Bracket Z (g),PCB centre X (g),PCB centre Y (g),PCB centre Z (g),Fixture X (g),Fixture Y (g),Fixture Z (g)
+Time (s),Control (g),Box lid X (g),Box lid Y (g),Box lid Z (g),Bracket X (g),Bracket Y (g),Bracket Z (g),PCB centre X (g),PCB centre Y (g),PCB centre Z (g),Interface plate X (g),Interface plate Y (g),Interface plate Z (g)
 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 0.0000488281,0,0,0,0,0,0,0,0,0,0,0,0,0
 0.0000976563,0,0,0,0,0,0,0,0,0,0,0,0,0

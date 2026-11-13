@@ -51,7 +51,7 @@ function welcomeHtml() {
     <div class="row" style="gap:10px;margin:4px 0 22px"><button class="btn primary" id="wl-guide">How to use ${esc(APP.name)}: the 5 minute guide</button><button class="btn" id="wl-example2">Explore the example first</button></div>
     <div class="wl-cards">
       <div class="wl-card"><div class="wl-n">1</div><h3>Import your data</h3><p>Drop your files anywhere on the page. A short review shows how each file was read (data type, axis, run, which column is the control) and lets you correct it before anything is imported.</p><div class="dropzone" id="dz"><strong>Drop files here</strong><br>or <button class="btn small" id="wl-import">choose files</button><div class="small muted" style="margin-top:6px">csv, txt, tsv, xlsx · reports: pdf, doc, docx</div></div></div>
-      <div class="wl-card"><div class="wl-n">2</div><h3>Try the example</h3><p>A made-up electronics box on a fixture, tested in X and Z: signature sweeps, a random run and a two-pulse shock. One bracket loosens during the X random, and the signature check catches it.</p><button class="btn" id="wl-example">Load the example project</button></div>
+      <div class="wl-card"><div class="wl-n">2</div><h3>Try the example</h3><p>A made-up electronics box on an interface plate, tested in X and Z: signature sweeps, a random run and a two-pulse shock. One bracket loosens during the X random, and the signature check catches it.</p><button class="btn" id="wl-example">Load the example project</button></div>
       <div class="wl-card"><div class="wl-n">3</div><h3>Open a saved project</h3><p>A project file (.json.gz) holds the sessions, tests, sensor maps and all the data. Save one to share your work; a colleague opens it here with Load project.</p><button class="btn" id="wl-load">Load project…</button></div>
     </div>
     <div class="wl-foot small"><a href="#" id="wl-brand">${b ? 'Change the company name and logo' : 'Add your company name and logo'}</a><span class="muted"> · </span><a href="#" id="wl-ref">Reference</a></div>
@@ -106,7 +106,7 @@ function guideDialog(step = 0) {
 }
 
 /* ---------- Example project ----------
-   Generated here, so it costs nothing to ship: an electronics box on a fixture with four triax accelerometers, tested in X and Z. The data go
+   Generated here, so it costs nothing to ship: an electronics box on an interface plate with four triax accelerometers, tested in X and Z. The data go
    through the same table reader as any CSV export. In X the bracket loosens during the random run (its mode drops by about 6 %). */
 function mulberry32(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 const EX_RANDOM = [[20, 0.01], [80, 0.04], [500, 0.04], [2000, 0.01]];
@@ -119,7 +119,8 @@ function sdofAbs(dt, a, fn, Q) { // absolute acceleration of a base-driven singl
 }
 function exampleData() {
   const rnd = mulberry32(20261113); const gauss = () => { let u = 0; while (!u) u = rnd(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * rnd()); };
-  const S = [{ name: 'Box lid', ch: [2, 3, 4], p3: { r: 70, angle: 40, z: 330 } }, { name: 'Bracket', ch: [5, 6, 7], p3: { r: 120, angle: 200, z: 230 } }, { name: 'PCB centre', ch: [8, 9, 10], p3: { r: 15, angle: 110, z: 270 } }, { name: 'Fixture', ch: [11, 12, 13], p3: { r: 176, angle: 90, z: 165 }, part: 'fixture' }];
+  const top = FIX.ringTop; // sensor heights follow the fixture or plate drawn in 3D
+  const S = [{ name: 'Box lid', ch: [2, 3, 4], p3: { r: 70, angle: 40, z: top + 168 } }, { name: 'Bracket', ch: [5, 6, 7], p3: { r: 125, angle: 200, z: top + 70 } }, { name: 'PCB centre', ch: [8, 9, 10], p3: { r: 15, angle: 110, z: top + 105 } }, { name: 'Interface plate', ch: [11, 12, 13], p3: { r: Math.min(176, FIX.plateX / 2 - 40), angle: 90, z: top }, part: 'fixture' }];
   const MODES = { X: [{ s: 1, fn: 185, Q: 14, w: 1.1 }, { s: 0, fn: 420, Q: 18, w: 0.8 }, { s: 2, fn: 610, Q: 24, w: 1.3 }, { s: -1, fn: 1480, Q: 30, w: 0.35 }], Z: [{ s: 2, fn: 330, Q: 20, w: 1.4 }, { s: 0, fn: 515, Q: 16, w: 0.9 }, { s: 1, fn: 760, Q: 12, w: 0.6 }, { s: -1, fn: 1720, Q: 30, w: 0.35 }] };
   const loose = m => m.map(q => q.s === 1 && q.fn < 300 ? { ...q, fn: q.fn * 0.935, Q: 11 } : q);
   const drift = (m, k) => m.map(q => ({ ...q, fn: q.fn * k }));
@@ -157,8 +158,8 @@ async function loadExampleProject() {
   const { S, files } = exampleData(); ensureExampleProfiles();
   const today = new Date().toISOString().slice(0, 10);
   const sensors = S.map((s, i) => newSensor(i + 1, { name: s.name, part: s.part || 'payload', brand: 'Example', ch: { X: s.ch[0], Y: s.ch[1], Z: s.ch[2] }, p3: s.p3, note: 'Example sensor' }));
-  const sess = newSession('Example · Electronics box on a fixture', today, 'Electronics box (example)', { model3d: 'fixture+box', sensors });
-  sess.geom = { w: 220, d: 180, h: 170 }; sess.notes = 'Example project, made-up data. An electronics box with four triax accelerometers (lid, bracket, PCB centre, fixture), tested in X and Z: signature sweep, random at the example profile, signature, shock (two pulses at the example SRS), signature. In X the bracket loosens during the random run: its mode drops from 185 to about 173 Hz, which the Signatures tab flags. Delete this session whenever you like.';
+  const sess = newSession('Example · Electronics box on an interface plate', today, 'Electronics box (example)', { model3d: 'fixture+box', sensors });
+  sess.geom = { w: 220, d: 180, h: 170 }; sess.notes = 'Example project, made-up data. An electronics box on an interface plate with four triax accelerometers (lid, bracket, PCB centre, plate), tested in X and Z: signature sweep, random at the example profile, signature, shock (two pulses at the example SRS), signature. In X the bracket loosens during the random run: its mode drops from 185 to about 173 Hz, which the Signatures tab flags. Delete this session whenever you like.';
   P.sessions.push(sess); const tests = new Map();
   for (const ef of files) {
     const f = parseTable(ef.rows, ef.name); f.sessionId = sess.id; f.detected = { ...f.detected, axis: ef.axis, run: ef.run, kindId: ef.kind, confidence: 1 };

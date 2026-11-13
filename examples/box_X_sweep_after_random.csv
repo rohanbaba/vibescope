@@ -1,4 +1,4 @@
-Frequency (Hz),Control (g),Box lid X (g),Box lid Y (g),Box lid Z (g),Bracket X (g),Bracket Y (g),Bracket Z (g),PCB centre X (g),PCB centre Y (g),PCB centre Z (g),Fixture X (g),Fixture Y (g),Fixture Z (g)
+Frequency (Hz),Control (g),Box lid X (g),Box lid Y (g),Box lid Z (g),Bracket X (g),Bracket Y (g),Bracket Z (g),PCB centre X (g),PCB centre Y (g),PCB centre Z (g),Interface plate X (g),Interface plate Y (g),Interface plate Z (g)
 5,0.24952,0.24874,0.010057,0.0098492,0.24994,0.010233,0.010159,0.24861,0.0098592,0.010034,0.25095,0.010141,0.010073
 5.058,0.2499,0.25269,0.010254,0.010057,0.24932,0.010149,0.010199,0.25284,0.010022,0.0099785,0.25044,0.009998,0.0099799
 5.117,0.25123,0.2512,0.010237,0.010132,0.25137,0.01004,0.010256,0.25524,0.010061,0.010081,0.24686,0.010082,0.010007

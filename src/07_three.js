@@ -48,7 +48,7 @@ function renderSensors(v) {
   const usable = t => !!lfCheck(t)?.usable;
   if (!UI.checkTest || !opts.some(t => t.id === UI.checkTest)) UI.checkTest = (at && opts.some(t => t.id === at.id) && usable(at)) ? at.id : (opts.find(t => t.kind === 'lowsine' && usable(t)) || opts.find(usable) || opts[0])?.id || null;
   const ct = opts.find(t => t.id === UI.checkTest) || null;
-  const models = [['fixture', 'Fixture'], ...(SITE.telescope ? [['fixture+telescope', 'Telescope']] : []), ['fixture+box', 'Box'], ['fixture+cylinder', 'Cylinder'], ['none', 'Markers only']];
+  const models = [['fixture', FIX.style === 'plate' ? 'Plate' : 'Fixture'], ...(SITE.telescope ? [['fixture+telescope', 'Telescope']] : []), ['fixture+box', 'Box'], ['fixture+cylinder', 'Cylinder'], ['none', 'Markers only']];
   let html = `<div class="section-h"><h2>Sensors and 3D</h2><span class="sub">${esc(s.name)} · ${sensorsOf(s).length} sensors · ${Object.keys(chmapOf(s)).length} channels</span><span style="flex:1"></span><button class="btn small" id="s3-copy">Copy from session…</button><button class="btn small" id="s3-export">Copy table as TSV</button></div>
   <div class="card" style="margin-bottom:14px"><div class="card-h"><h3>Sensor table</h3><span class="hint">One row per accelerometer: where it sits, its serial and sensitivities, and which controller inputs carry its X, Y and Z. "Pts" is optional: the test axis a sensor axis points along, when you know it from the installation.</span><button class="btn small" id="s3-add">+ sensor</button><button class="btn small" id="s3-paste" title="Paste rows from a spreadsheet: #, location, brand, S/N, sens X, Y, Z, input X, Y, Z, part">Paste sheet</button><button class="btn small" id="s3-preset" title="Replace the sensors with a saved or built-in sensor set">Load template…</button><button class="btn small" id="s3-savet" title="Save this sensor set so it can be reused for another session">Save as template</button></div><div class="card-b tbl-wrap">${sensorTable(s)}</div></div>
   <div class="grid2" style="grid-template-columns:minmax(420px,1fr) minmax(0,1fr)">
@@ -138,9 +138,11 @@ function buildArticle(model) {
   // fixture plate with rounded corners
   const sh = new THREE.Shape(); const w = FIX.plateX / 2, h = FIX.plateY / 2, rr = 30;
   sh.moveTo(-w + rr, -h); sh.lineTo(w - rr, -h); sh.quadraticCurveTo(w, -h, w, -h + rr); sh.lineTo(w, h - rr); sh.quadraticCurveTo(w, h, w - rr, h); sh.lineTo(-w + rr, h); sh.quadraticCurveTo(-w, h, -w, h - rr); sh.lineTo(-w, -h + rr); sh.quadraticCurveTo(-w, -h, -w + rr, -h);
-  const hole = new THREE.Path(); hole.absarc(0, 0, FIX.ringID / 2, 0, Math.PI * 2, true); sh.holes.push(hole);
+  if (FIX.ringID) { const hole = new THREE.Path(); hole.absarc(0, 0, FIX.ringID / 2, 0, Math.PI * 2, true); sh.holes.push(hole); }
   for (const [x, y] of FIX.holes) { const p = new THREE.Path(); p.absarc(x, y, 5.2, 0, Math.PI * 2, true); sh.holes.push(p); }
   grp.add(new THREE.Mesh(new THREE.ExtrudeGeometry(sh, { depth: FIX.plateT, bevelEnabled: false, curveSegments: 24 }), alu));
+  // a fixture with a ring on the plate (FIX.style 'ring'); a plain interface plate (FIX.style 'plate') stops at the plate
+  if (FIX.style !== 'plate') {
   const ring = new THREE.Shape(); ring.absarc(0, 0, FIX.ringOD / 2, 0, Math.PI * 2, false); const rh = new THREE.Path(); rh.absarc(0, 0, FIX.ringID / 2, 0, Math.PI * 2, true); ring.holes.push(rh);
   const ringGlass = new THREE.MeshStandardMaterial({ color: 0xb8bec8, metalness: 0.5, roughness: 0.45, transparent: true, opacity: 0.35, side: THREE.DoubleSide, depthWrite: false });
   // with a payload on top, the ring is drawn see-through so anything inside the cavity stays visible
@@ -152,6 +154,7 @@ function buildArticle(model) {
     m.position.set(-Math.sin(a) * FIX.ribT / 2, Math.cos(a) * FIX.ribT / 2, FIX.plateT); m.rotation.set(Math.PI / 2, 0, a, 'ZYX'); grp.add(m);
   }
   for (let i = 0; i < 6; i++) { const a = (30 + i * 60) * Math.PI / 180; const b = new THREE.Mesh(new THREE.CylinderGeometry(22, 22, 2, 24), alu); b.rotation.x = Math.PI / 2; b.position.set(Math.cos(a) * 176, Math.sin(a) * 176, FIX.ringTop + 1); grp.add(b); }
+  }
   for (const [x, y] of FIX.holes) { const b = new THREE.Mesh(new THREE.CylinderGeometry(8, 8, 6, 12), dark); b.rotation.x = Math.PI / 2; b.position.set(x, y, FIX.plateT + 3); grp.add(b); }
   for (const [x, y] of FIX.taps) { const b = new THREE.Mesh(new THREE.CylinderGeometry(5, 5, 1, 12), dark); b.rotation.x = Math.PI / 2; b.position.set(x, y, FIX.plateT + 0.5); grp.add(b); }
   const pay = new THREE.Group(); pay.name = 'payload'; grp.add(pay); T3.payload = pay;

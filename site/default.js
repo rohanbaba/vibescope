@@ -16,7 +16,8 @@ const SITE_HISTORY = '<p><strong>Version history.</strong><br>v3.0: first open-s
 function siteMigrate() { }
 function siteAfterBundled() { }
 function siteBootNotice() { }
-/* Generic fixture drawn in the 3D view: a square plate with a ring on top and gussets. Edit to match your own. */
-const FIX = { plateX: 500, plateY: 500, plateT: 20, ringOD: 360, ringID: 240, ringTop: 165, ribs: 8, ribLen: 90, ribT: 10,
-  holes: (() => { const o = []; for (const x of [-200, -100, 100, 200]) for (const y of [-200, 200]) o.push([x, y]); for (const y of [-100, 100]) for (const x of [-200, 200]) o.push([x, y]); return o; })(), taps: [] };
+/* What the 3D view draws under the test article: a plain square interface plate with a bolt pattern. 'ring' style (see 07_three.js)
+   adds a ring and gussets; ringTop is the height the article sits at. Edit to match your own. */
+const FIX = { style: 'plate', plateX: 420, plateY: 420, plateT: 20, ringOD: 0, ringID: 0, ringTop: 20, ribs: 0, ribLen: 0, ribT: 0,
+  holes: (() => { const o = []; const e = 180, step = 60; for (let x = -e; x <= e + 0.1; x += step) { o.push([x, -e], [x, e]); } for (let y = -e + step; y < e - 0.1; y += step) { o.push([-e, y], [e, y]); } return o; })(), taps: [] };
 function buildTelescope(pay, g = {}) { buildGenericPayload(pay, 'fixture+cylinder', g); }

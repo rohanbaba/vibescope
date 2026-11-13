@@ -269,7 +269,7 @@ function multiMenu(x, y, tests) {
 function deleteTest(id) { const t = P.tests.find(t => t.id === id); if (!t) return; campaignsOf().forEach(c => c.testIds = c.testIds.filter(x => x !== id)); t.fileIds.forEach(fid => { const f = P.files.find(f => f.id === fid); if (f) f.testId = null; }); P.tests = P.tests.filter(q => q.id !== id); if (UI.testId === id) { UI.testId = null; if (UI.tab === 'test') UI.tab = 'overview'; } UI.compare.tests = UI.compare.tests.filter(x => x !== id); }
 function confirmDialog(msg, onYes) { modal('Please confirm', `<p>${esc(msg)}</p>`, [{ label: 'Cancel' }, { label: 'Confirm', primary: true, danger: true, onClick: onYes }]); }
 
-const MODELS3D = [['fixture', 'Fixture only (plate and ring)'], ...(SITE.telescope ? [['fixture+telescope', 'Fixture + telescope payload']] : []), ['fixture+box', 'Fixture + box payload (size below)'], ['fixture+cylinder', 'Fixture + cylinder payload (size below)'], ['none', 'No model, markers only']];
+const MODELS3D = [['fixture', FIX.style === 'plate' ? 'Interface plate only' : 'Fixture only (plate and ring)'], ...(SITE.telescope ? [['fixture+telescope', 'Fixture + telescope payload']] : []), ['fixture+box', (FIX.style === 'plate' ? 'Plate' : 'Fixture') + ' + box payload (size below)'], ['fixture+cylinder', (FIX.style === 'plate' ? 'Plate' : 'Fixture') + ' + cylinder payload (size below)'], ['none', 'No model, markers only']];
 function editSessionDialog(s = null) {
   const isNew = !s; const d = s || newSession('New session', new Date().toISOString().slice(0, 10));
   const g = d.geom || {}; const others = P.sessions.filter(q => q.id !== d.id);

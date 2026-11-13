@@ -19,7 +19,7 @@ VibeScope is a free viewer for environmental test data. Drop in the exports from
 | **Every channel at a glance** | Channel chips with gRMS or peak per sensor, transmissibility, one plot per sensor, and a hover readout that lists every channel at the cursor, sorted, even with 50 channels. |
 | **Signature checks** | Before and after sweeps are paired with their run automatically. Resonances are matched channel by channel and every frequency shift is checked against your limit. |
 | **Shock checks** | Control SRS against the profile (maximax, positive, negative), share of points in tolerance, effective duration, velocity and displacement, SRS amplification per location, pseudo velocity, and pulse-to-pulse comparison. |
-| **Sensors and 3D** | Map input numbers to sensors, see them on a 3D fixture, and let the channel check find which axis of each sensor carries the shaker motion and which channels cannot be real. |
+| **Sensors and 3D** | Map input numbers to sensors, see them in 3D on an interface plate (or your own fixture), and let the channel check find which axis of each sensor carries the shaker motion and which channels cannot be real. |
 | **Campaigns** | Collect only the runs that count, from any number of test days, and get one overview of the campaign. |
 | **Yours** | Add your company name and logo. Save the whole project as one file and share it; a colleague opens it in the same page. |
 
@@ -99,11 +99,11 @@ python3 build.py --site site/my_site.js --out my_vibescope.html
 | `src/06_views.js`, `src/06b_signatures.js` | Test, Compare, Files, Settings, Signatures |
 | `src/07_three.js` | Sensors tab and 3D view |
 | `src/08_init.js` | Start-up, save and load, migrations |
-| `site/default.js` | Site settings: default brand, profile library, the fixture drawn in 3D |
+| `site/default.js` | Site settings: default brand, profile library, the interface plate drawn in 3D |
 | `docs/guide_images.js` | Pictures for the built-in guide |
 | `examples/` | Raw CSV files of the example project |
 
-To make your own edition (your company's profiles, logo, fixture), copy `site/default.js`, edit it, and build with `--site`.
+To make your own edition (your company's profiles, logo, fixture drawing), copy `site/default.js`, edit it, and build with `--site`.
 
 ---
 

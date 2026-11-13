@@ -1,4 +1,4 @@
-Frequency (Hz),Control (g²/Hz),Box lid X (g²/Hz),Box lid Y (g²/Hz),Box lid Z (g²/Hz),Bracket X (g²/Hz),Bracket Y (g²/Hz),Bracket Z (g²/Hz),PCB centre X (g²/Hz),PCB centre Y (g²/Hz),PCB centre Z (g²/Hz),Fixture X (g²/Hz),Fixture Y (g²/Hz),Fixture Z (g²/Hz)
+Frequency (Hz),Control (g²/Hz),Box lid X (g²/Hz),Box lid Y (g²/Hz),Box lid Z (g²/Hz),Bracket X (g²/Hz),Bracket Y (g²/Hz),Bracket Z (g²/Hz),PCB centre X (g²/Hz),PCB centre Y (g²/Hz),PCB centre Z (g²/Hz),Interface plate X (g²/Hz),Interface plate Y (g²/Hz),Interface plate Z (g²/Hz)
 20,0.012163,0.010294,0.000018098,0.000022785,0.014781,0.000023627,0.000022142,0.014346,0.000018503,0.000021457,0.012036,0.000016343,0.000019304
 22.5,0.011574,0.012065,0.0000173,0.000021703,0.010735,0.000019973,0.000020953,0.013402,0.000022822,0.000019361,0.012657,0.000019127,0.000019395
 25,0.012656,0.012621,0.000021979,0.000024885,0.015303,0.000028246,0.000025992,0.014196,0.000019399,0.000019693,0.01219,0.000021548,0.000018115

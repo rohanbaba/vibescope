@@ -72,12 +72,12 @@ function controlSensor() { return { id: 'CTRL', pos: 0, name: 'Control', part: '
 function newSession(name, date, article = 'Test article', opts = {}) {
   const s = { id: uid(), name, date, article, notes: '', show3D: true, model3d: opts.model3d || 'fixture', sensors: [controlSensor()], v: 2 };
   if (opts.sensors) s.sensors.push(...opts.sensors);
-  else s.sensors.push(newSensor(1, { name: 'Sensor 1', part: 'fixture', ch: { X: 2, Y: 3, Z: 4 }, p3: { r: 176, angle: 90, z: 165 } }));
+  else s.sensors.push(newSensor(1, { name: 'Sensor 1', part: 'fixture', ch: { X: 2, Y: 3, Z: 4 }, p3: { r: Math.min(176, FIX.plateX / 2 - 40), angle: 90, z: FIX.ringTop } }));
   return s;
 }
 const SENSOR_TEMPLATES = [
   ...SITE_TEMPLATES,
-  { id: 'one', name: 'One triax on the fixture (edit later)', make: () => [newSensor(1, { name: 'Sensor 1', part: 'fixture', ch: { X: 2, Y: 3, Z: 4 }, p3: { r: 176, angle: 90, z: 165 } })], model3d: 'fixture' },
+  { id: 'one', name: 'One triax on the fixture or plate (edit later)', make: () => [newSensor(1, { name: 'Sensor 1', part: 'fixture', ch: { X: 2, Y: 3, Z: 4 }, p3: { r: Math.min(176, FIX.plateX / 2 - 40), angle: 90, z: FIX.ringTop } })], model3d: 'fixture' },
 ];
 function sensorTemplates() { return [...(P?.sensorTemplates || []).map(t => ({ ...t, user: true, make: () => JSON.parse(JSON.stringify(t.sensors)).map(x => ({ ...x, id: uid() })) })), ...SENSOR_TEMPLATES]; }
 /* Bring a v1 session (sensors with place/angle and an explicit chmap) to the v2 sensor model. Safe to call repeatedly. */
